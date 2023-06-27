@@ -1,16 +1,20 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
+import { ChatType } from '../../types/ChatItemType'
 
-const ChatListItem = () => {
+type Props = {
+  chat: ChatType
+}
+const ChatListItem = ({chat}: Props) => {
   return (
     <View style={styles.container}>
-      <Image source={{uri: 'https://res.cloudinary.com/dqaerysgb/image/upload/v1687820061/samples/people/she_b84e5i.jpg'}} style={styles.image} />
+      <Image source={{uri: chat.user.image}} style={styles.image} />
       <View style={styles.content}>
         <View style={styles.row}>
-          <Text style={styles.name} numberOfLines={1}>Girls</Text>
-          <Text style={styles.subtitle}>4:30</Text>
+          <Text style={styles.name} numberOfLines={1}>{chat.user.name}</Text>
+          <Text style={styles.subtitle}>{chat.lastMessage.createdAt}</Text>
         </View>
-        <Text numberOfLines={2} style={styles.subtitle}>Hello dude!</Text>
+        <Text numberOfLines={2} style={styles.subtitle}>{chat.lastMessage.text}</Text>
       </View>
     </View>
   )
