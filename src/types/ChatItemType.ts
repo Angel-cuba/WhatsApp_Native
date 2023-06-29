@@ -5,7 +5,7 @@ export type ChatType = {
       name: string
     },
     lastMessage: {
-      text: string,
+      content: string,
       createdAt: string
     }
 }
