@@ -41,6 +41,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     maxWidth: '80%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    elevation: 1,
+    shadowOpacity: 0.18,
+    shadowRadius: 1.22,
+
   },
   time: {
     alignSelf: 'flex-end',

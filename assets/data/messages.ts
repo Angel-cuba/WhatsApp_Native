@@ -24,7 +24,7 @@ export const messages: MessagesType[] = [
     content: 'Hei yooooo? Im here, where are you? Im waiting for you',
     createdAt: '2023-06-28T15:30:00.000Z',
     user: {
-      id: 'u3',
+      id: 'u1',
       name: 'Carlos',
     },
   },
@@ -51,7 +51,7 @@ export const messages: MessagesType[] = [
     content: 'Im fine, just waiting my cooffe?',
     createdAt: '2023-05-25T15:30:00.000Z',
     user: {
-      id: 'u6',
+      id: 'u1',
       name: 'Jorge',
     },
   }

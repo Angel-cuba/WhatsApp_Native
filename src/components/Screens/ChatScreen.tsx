@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import React from 'react';
+import { FlatList, SafeAreaView } from 'react-native';
 import { data } from '../../../assets/data/chats';
 import ChatListItem from '../ChatListItem';
 
