@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ChatScreen from './src/components/Screens/ChatScreen';
 import Chat from './src/components/Screens/Chat';
 

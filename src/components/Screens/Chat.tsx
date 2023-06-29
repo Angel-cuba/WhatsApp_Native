@@ -1,11 +1,18 @@
-import { View, Text, ImageBackground, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import {
+  ImageBackground,
+  StyleSheet,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import React from 'react';
 import { messages } from '../../../assets/data/messages';
 import Message from '../Message';
+import InputBox from '../InputBox';
 
 const Chat = () => {
   return (
-    <SafeAreaView>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ImageBackground
         source={{
           uri: 'https://res.cloudinary.com/dqaerysgb/image/upload/v1628020659/samples/animals/three-dogs.jpg',
@@ -19,8 +26,9 @@ const Chat = () => {
           style={styles.list}
           inverted
         />
+        <InputBox />
       </ImageBackground>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
