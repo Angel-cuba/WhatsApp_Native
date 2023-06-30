@@ -3,7 +3,7 @@ import { FlatList, SafeAreaView } from 'react-native';
 import { data } from '../../../assets/data/chats';
 import ChatListItem from '../ChatListItem';
 
-const ChatScreen = () => {
+const ChatsScreen = () => {
   return (
     <SafeAreaView>
       <FlatList data={data} renderItem={({ item }) => <ChatListItem chat={item} />} />
@@ -11,4 +11,4 @@ const ChatScreen = () => {
   );
 };
 
-export default ChatScreen;
+export default ChatsScreen;
