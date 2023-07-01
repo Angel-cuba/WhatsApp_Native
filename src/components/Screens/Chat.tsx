@@ -14,22 +14,25 @@ import InputBox from '../InputBox';
 type Props = {
   id: string;
   name: string;
-}
+};
 
 const Chat = () => {
   const route = useRoute();
-  const { id, name } = route.params as Props
-  const navigation = useNavigation()
+  const { id, name } = route.params as Props;
+  const navigation = useNavigation();
 
-useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: name,
     });
-  }
-  , [name]);
+  }, [name]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 90}
+      style={styles.bg}
+    >
       <ImageBackground
         source={{
           uri: 'https://res.cloudinary.com/dqaerysgb/image/upload/v1628020659/samples/animals/three-dogs.jpg',
