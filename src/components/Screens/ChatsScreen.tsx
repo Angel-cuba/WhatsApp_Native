@@ -6,7 +6,7 @@ import ChatListItem from '../ChatListItem';
 const ChatsScreen = () => {
   return (
     <SafeAreaView>
-      <FlatList data={data} renderItem={({ item }) => <ChatListItem chat={item} />} />
+      <FlatList data={data} renderItem={({ item }) => <ChatListItem chat={item} />} style={{backgroundColor: '#fafafa'}}/>
     </SafeAreaView>
   );
 };
