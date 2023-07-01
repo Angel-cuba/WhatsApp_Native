@@ -4,6 +4,7 @@ export type ChatType = {
     id: string;
     image: string;
     name: string;
+    status: string;
   };
   lastMessage: {
     id: string;
@@ -21,3 +22,10 @@ export type MessagesType = {
     name: string;
   };
 };
+
+export type ContactListType = {
+  id: string;
+  image: string;
+  name: string;
+  status: string
+}
