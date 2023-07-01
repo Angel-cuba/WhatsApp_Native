@@ -1,7 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import ChatScreen from './src/components/Screens/ChatsScreen';
-import Chat from './src/components/Screens/Chat';
 import Navigator from './src/navigation';
 
 
@@ -17,8 +15,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
     justifyContent: 'center',
-    paddingVertical: 30
   },
 });
