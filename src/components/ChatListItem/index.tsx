@@ -10,12 +10,20 @@ type Props = {
   chat: ChatType;
 };
 type navigationType = {
-  navigate: (arg0: string) => void;
+  navigate: (arg0: string, arg1: { id: string; name: string }) => void;
 };
 const ChatListItem = ({ chat }: Props) => {
   const navigation: navigationType = useNavigation();
   return (
-    <Pressable style={styles.container} onPress={() => navigation.navigate('Chat')}>
+    <Pressable
+      style={styles.container}
+      onPress={() =>
+        navigation.navigate('Chat', {
+          id: chat.id,
+          name: chat.user.name,
+        })
+      }
+    >
       <Image source={{ uri: chat.user.image }} style={styles.image} />
       <View style={styles.content}>
         <View style={styles.row}>

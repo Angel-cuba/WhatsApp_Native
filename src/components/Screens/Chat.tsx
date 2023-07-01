@@ -5,12 +5,29 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import { messages } from '../../../assets/data/messages';
 import Message from '../Message';
 import InputBox from '../InputBox';
 
+type Props = {
+  id: string;
+  name: string;
+}
+
 const Chat = () => {
+  const route = useRoute();
+  const { id, name } = route.params as Props
+  const navigation = useNavigation()
+
+useEffect(() => {
+    navigation.setOptions({
+      title: name,
+    });
+  }
+  , [name]);
+
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ImageBackground
