@@ -35,14 +35,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 14,
     marginVertical: 5,
     height: 70,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0.5,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 2.4,
-    elevation: 4,
   },
   image: {
     width: 60,
@@ -60,6 +52,14 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: '#003804',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0.5,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 2.4,
+    elevation: 4,
   },
 });
 
