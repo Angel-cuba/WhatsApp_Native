@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useNavigation } from '@react-navigation/native';
 import { ContactListType } from '../../types/ChatItemType';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { createChatRoom, createUserChatRoom } from '../../graphql/mutations';
 dayjs.extend(relativeTime);
 
 type Props = {
@@ -12,10 +14,53 @@ type Props = {
 type navigationType = {
   navigate: (arg0: string, arg1: { id: string; name: string }) => void;
 };
+type chatRoomData = {
+  id: string;
+  users: [string];
+  lastMessage: string;
+  createdAt: string;
+};
+type chatRoomProps = {
+  data: {
+    createChatRoom: chatRoomData;
+  };
+};
 const ContactListItem = ({ user }: Props) => {
   const navigation: navigationType = useNavigation();
+
+  const onPress = async () => {
+    //Create a chat room
+    const newChat = (await API.graphql(
+      graphqlOperation(createChatRoom, { input: {} })
+    )) as chatRoomProps;
+    console.log(newChat);
+    if (!newChat.data?.createChatRoom) {
+      console.log('Failed to create a chat room');
+    }
+    const newChatRoom = newChat.data?.createChatRoom;
+    //Add the clicked user to the Chatroom
+    await API.graphql(
+      graphqlOperation(createUserChatRoom, {
+        input: { chatRoomId: newChatRoom.id, userId: user.id },
+      })
+    );
+
+    // Add the auth user to the chat room
+    const authUser = await Auth.currentAuthenticatedUser();
+    await API.graphql(
+      graphqlOperation(createUserChatRoom, {
+        input: { chatRoomId: newChatRoom.id, userId: authUser.attributes.sub },
+      })
+    );
+
+    // Navigate to the chat room that has been created
+    navigation.navigate('Chat', { 
+      id: newChatRoom.id,
+      name: user.name,
+    });
+  };
   return (
-    <Pressable style={styles.container} onPress={() => console.warn('hello')}>
+    <Pressable style={styles.container} onPress={onPress}>
       <Image source={{ uri: user.image }} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.name} numberOfLines={1}>
