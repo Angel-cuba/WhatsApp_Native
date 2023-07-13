@@ -1,6 +1,5 @@
 import { View, FlatList } from 'react-native'
 import React, {useState, useEffect} from 'react'
-import { data } from '../../../assets/data/chats'
 import ContactListItem from '../ContactListItem'
 import { API, graphqlOperation} from 'aws-amplify'
 import  {listUsers} from '../../graphql/queries'
