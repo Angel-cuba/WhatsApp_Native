@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ContactListType } from '../../types/ChatItemType';
 import { API, Auth, graphqlOperation } from 'aws-amplify';
 import { createChatRoom, createUserChatRoom } from '../../graphql/mutations';
+import { ChatRoomService } from '../../services/chatRoomService';
 dayjs.extend(relativeTime);
 
 type Props = {
@@ -25,15 +26,28 @@ type chatRoomProps = {
     createChatRoom: chatRoomData;
   };
 };
+type existingChatRoom = {
+  id: string;
+  existingChatRoom: (arg: string) => void;
+}
 const ContactListItem = ({ user }: Props) => {
   const navigation: navigationType = useNavigation();
 
   const onPress = async () => {
+    const authUser= await Auth.currentAuthenticatedUser()
+    // Check first if there is already a chat room with user
+    const existingChatRoom = await ChatRoomService(user.id) as unknown as existingChatRoom;
+    if(existingChatRoom) {
+      navigation.navigate('Chat', {
+        id: existingChatRoom.id,
+        name: user.name,
+      });
+      return;
+    }
     //Create a chat room
     const newChat = (await API.graphql(
       graphqlOperation(createChatRoom, { input: {} })
     )) as chatRoomProps;
-    console.log(newChat);
     if (!newChat.data?.createChatRoom) {
       console.log('Failed to create a chat room');
     }
@@ -46,7 +60,6 @@ const ContactListItem = ({ user }: Props) => {
     );
 
     // Add the auth user to the chat room
-    const authUser = await Auth.currentAuthenticatedUser();
     await API.graphql(
       graphqlOperation(createUserChatRoom, {
         input: { chatRoomId: newChatRoom.id, userId: authUser.attributes.sub },
