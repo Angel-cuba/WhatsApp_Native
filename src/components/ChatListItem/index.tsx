@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ChatType } from '../../types/ChatItemType';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Auth } from 'aws-amplify';
 dayjs.extend(relativeTime);
 
 type Props = {
@@ -13,7 +14,7 @@ type userDataProps = {
   id: string;
   name: string;
   image: string;
-}
+};
 type chatProps = {
   chatRoom: {
     id: string;
@@ -21,18 +22,32 @@ type chatProps = {
       id: string;
       content: string;
       createdAt: string;
-    }
+    };
     users: {
-      items: userDataProps
-    }
-  }
-}
-type navigationType = {
-  navigate: (arg0: string, arg1: { id: string, users: userDataProps }) => void;
+      items: {
+        user: userDataProps;
+      }[];
+    };
+  };
 };
-const ChatListItem = ({ chat }: {chat: chatProps}) => {
-  const currentUser = chat.chatRoom.users.items[0].user
+type navigationType = {
+  navigate: (arg0: string, arg1: { id: string; users: {} }) => void;
+};
+const ChatListItem = ({ chat }: { chat: chatProps }) => {
+  const [user, setUser] = useState(null);
   const navigation: navigationType = useNavigation();
+
+  useEffect(() => {
+    const authUser = async () => {
+      const user = await Auth.currentAuthenticatedUser();
+
+      const userItem = chat.chatRoom.users.items.find(
+        (item) => item.user.id !== user.attributes.sub
+      );
+      setUser(userItem?.user);
+    };
+    authUser();
+  }, []);
   return (
     <Pressable
       style={styles.container}
@@ -43,13 +58,15 @@ const ChatListItem = ({ chat }: {chat: chatProps}) => {
         })
       }
     >
-      <Image source={{ uri: currentUser.image }} style={styles.image} />
+      <Image source={{ uri: user?.image }} style={styles.image} />
       <View style={styles.content}>
         <View style={styles.row}>
           <Text style={styles.name} numberOfLines={1}>
-            {currentUser.name}
+            {user?.name}
           </Text>
-          <Text style={styles.subtitle}>{dayjs(chat.chatRoom.lastMessage?.createdAt).fromNow(true)}</Text>
+          <Text style={styles.subtitle}>
+            {dayjs(chat.chatRoom.lastMessage?.createdAt).fromNow(true)}
+          </Text>
         </View>
         <Text numberOfLines={2} style={styles.subtitle}>
           {chat.chatRoom.lastMessage?.content}

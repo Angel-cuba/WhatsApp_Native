@@ -6,27 +6,45 @@ import {
   Platform,
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { messages } from '../../../assets/data/messages';
 import Message from '../Message';
 import InputBox from '../InputBox';
+import { Auth } from 'aws-amplify';
 
 type Props = {
   id: string;
-  name: string;
+  users: {
+    user: {
+      id: string;
+      name: string;
+      image: string;
+    };
+  }[]
 };
 
 const Chat = () => {
+  const [user, setUser] = useState(null);
   const route = useRoute();
-  const { id, name } = route.params as Props;
+  const { id, users } = route.params as Props;
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.setOptions({
-      title: name,
-    });
-  }, [name]);
+        const authUser = async () => {
+      const user = await Auth.currentAuthenticatedUser();
 
+      const userItem = users.find(
+        (item) => item.user.id !== user.attributes.sub
+      );
+      setUser(userItem?.user);
+    };
+    authUser();
+  }, [id, users]);
+    navigation.setOptions({
+      title: id
+        ? `${user?.name}` // if there is an id, then it is a chat room
+        : 'Chat', // otherwise, it is a user chat
+    });
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
