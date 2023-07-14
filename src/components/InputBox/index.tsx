@@ -2,11 +2,24 @@ import { StyleSheet, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+import { createMessage } from '../../graphql/mutations';
 
-const InputBox = () => {
+const InputBox = ({chatRoomId}) => {
   const [message, setMessage] = useState('');
-  const onSend = () => {
-    console.warn('Sending message', message);
+  const onSend = async () => {
+    const authUser = await Auth.currentAuthenticatedUser() 
+      await API.graphql(
+        graphqlOperation(
+          createMessage, {
+            input: {
+              content: message,
+              userID: authUser.attributes.sub,
+              chatroomID: chatRoomId
+            }
+          }
+        )
+      ) 
     setMessage('');
   };
   return (
