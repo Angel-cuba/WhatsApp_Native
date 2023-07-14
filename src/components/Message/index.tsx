@@ -3,11 +3,13 @@ import React from 'react';
 import { MessagesType } from '../../types/ChatItemType';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { Auth } from 'aws-amplify';
 dayjs.extend(relativeTime);
 
 const Message = ({ message }: { message: MessagesType }) => {
-  const ownerMessage = () => {
-    return message.user.id === 'u1';
+  const ownerMessage = async () => {
+    const authUser = await Auth.currentAuthenticatedUser()
+    return message.user?.id === authUser.attributes.sub;
   };
   return (
     <View
